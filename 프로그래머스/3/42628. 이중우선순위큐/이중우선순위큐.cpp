@@ -5,7 +5,7 @@
 using namespace std;
 
 vector<int> solution(vector<string> operations) {
-    set<int> st;
+    multiset<int> st;
     
     for(auto op:operations){        
         if(op[0]=='I'){
