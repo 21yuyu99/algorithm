@@ -1,25 +1,26 @@
 #include <string>
 #include <vector>
-#include <set>
 #include <iostream>
+#include <queue>
 using namespace std;
 
 long long solution(int n, vector<int> works) {
-    multiset<int> st;
+    priority_queue<int> pq;
     for(auto w:works){
-        st.insert(w);
+        pq.push(w);
     }
     for(int i=0;i<n;i++){
-        if(st.empty()) continue;
-        auto it = --st.end();
-        int tmp = *it-1;
-        st.erase(it);
+        if(pq.empty()) continue;
+        int tmp = pq.top()-1;
+        pq.pop();
         if(tmp<0) continue;
-        st.insert(tmp);
+        pq.push(tmp);
     }
     long long answer = 0;
-    for(auto s:st){
-        answer += s*s;
+    while(!pq.empty()){
+        int tmp = pq.top();
+        answer += tmp*tmp;
+        pq.pop();
     }
     return answer;
 }
