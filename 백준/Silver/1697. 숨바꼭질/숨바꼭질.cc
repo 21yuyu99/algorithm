@@ -10,13 +10,13 @@ int main(){
     int N,K;
     cin >> N >> K;
 
-    priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> q; //{cnt,num}
+    queue<pair<int,int>> q; //{cnt,num}
     q.push({0,N});
     vector<bool> visited(100001,false);
     visited[N] = true;
     while(!q.empty()){
-        int cnt = q.top().first;
-        int num = q.top().second;
+        int cnt = q.front().first;
+        int num = q.front().second;
         if(num == K){
             cout << cnt;
             break;
