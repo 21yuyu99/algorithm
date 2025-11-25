@@ -12,7 +12,7 @@ int main(){
 
     priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> q; //{cnt,num}
     q.push({0,N});
-    vector<bool> visited(200001,false);
+    vector<bool> visited(100001,false);
 
     while(!q.empty()){
         int cnt = q.top().first;
@@ -27,9 +27,9 @@ int main(){
         //cout << num << " : " << a << " " << b << " " << c << "\n";
         if(a>=0 && !visited[a])
             q.push({cnt+1,a});
-        if(b<=200000 && !visited[b])
+        if(b<=100000&& !visited[b])
             q.push({cnt+1,b});
-        if(c<=200000 && !visited[c]){
+        if(c<=100000 && !visited[c]){
             q.push({cnt+1,c});
         }
 
