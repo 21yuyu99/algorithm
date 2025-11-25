@@ -13,11 +13,10 @@ int main(){
     priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> q; //{cnt,num}
     q.push({0,N});
     vector<bool> visited(100001,false);
-
+    visited[N] = true;
     while(!q.empty()){
         int cnt = q.top().first;
         int num = q.top().second;
-        visited[num] = true;
         if(num == K){
             cout << cnt;
             break;
@@ -25,12 +24,17 @@ int main(){
         q.pop();
         int a = num - 1, b = num + 1, c = num*2;
         //cout << num << " : " << a << " " << b << " " << c << "\n";
-        if(a>=0 && !visited[a])
+        if(a>=0 && !visited[a]){
+            visited[a] = true;
             q.push({cnt+1,a});
-        if(b<=100000&& !visited[b])
+        }
+        if(b<=100000&& !visited[b]){
             q.push({cnt+1,b});
+            visited[b] = true;
+        }
         if(c<=100000 && !visited[c]){
             q.push({cnt+1,c});
+            visited[c] = true;
         }
 
     }
