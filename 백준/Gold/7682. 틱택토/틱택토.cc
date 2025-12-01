@@ -81,17 +81,13 @@ int main(){
         cin >> input;
         if(input=="end") break;
         pair<int,int> cnt = check_cnt(input); //{x,y}
-        if(!(cnt.second == cnt.first || cnt.first-cnt.second==1)) { //O가 더 많을 수 없음.
+        if(!(cnt.second == cnt.first || cnt.first-cnt.second==1)) { //개수 조건
             cout << "invalid\n";
             continue;
         }
-        // if(cnt.second==4 && cnt.first==5){ //게임판이 가득 참
-        //     cout << "valid\n";
-        //     continue;
-        // }
+
         int xSuccess = check_success(input,'X'); //X 성공했는지 확인
         int ySuccess = check_success(input,'O'); //O 성공했는지 확인
-        //cout << xSuccess << " " << ySuccess << "\n";
         if((xSuccess<=0 && ySuccess<=0) && !(cnt.second==4 && cnt.first==5)){ //가득차지 않았는데, 성공한 것이 없으면 
             cout << "invalid\n";
             continue;
@@ -101,11 +97,7 @@ int main(){
             cout << "invalid\n";
             continue;
         }
-
-        // if(xSuccess > 1 || ySuccess > 1){ //성공한 것이 여러개일 수 없음.
-        //     cout << "invalid\n";
-        //     continue;
-        // }        
+    
         if(xSuccess > 0 && cnt.first <= cnt.second){
             cout << "invalid\n";
             continue;
