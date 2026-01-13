@@ -7,15 +7,14 @@ int main(){
     long long S;
     cin >> S;
     long long cnt = 0;
-    long long j = 3;
-    long long i = 2;
-    while(i<S){
-        ++cnt;
-        //cout << i << " " << cnt << " \n";        
-        i+=j;
-        ++j;
+    long long total = 0;
+    long long i = 0;
+    while(total<S){
+        ++i;
+        total += i;
+        if(total<=S)
+            ++cnt;
     }
-    ++cnt;
     cout << cnt;
     return 0;
 }
