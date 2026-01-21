@@ -4,6 +4,7 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+
 using namespace std;
 int main(){
     ios_base::sync_with_stdio(0);
@@ -26,7 +27,7 @@ int main(){
     int answer = 0;
     int max_num = 9;
     for(int i=0;i<26;i++){
-        if(check_num[i]==0) continue;
+        if(check_num[i]==0) break;
         answer += max_num * check_num[i];
         --max_num;
     }
