@@ -34,6 +34,7 @@ bool move_test(){
 }
 void make_new_line(int newLine,int x,int y){
     if(newLine > 3) return;
+    if(answer != -1 && answer<newLine) return;
     if(x==H && y == N){
         // 사다리 진행
         if(move_test()){
