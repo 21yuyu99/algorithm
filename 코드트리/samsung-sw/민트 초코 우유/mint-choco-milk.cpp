@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <tuple>
 using namespace std;
 int N,T;
 vector<vector<int>> F; //신봉음식 //비트마스크 001(1) 010(2) 100(4)
@@ -84,7 +85,7 @@ void find_leader(int bidx,int sidx){
     for(int i=0;i<mem.size();i++){
         int r = mem[i].first;
         int c = mem[i].second;
-        if(B[r][c]>lb || (B[r][c]==lb && r<lr) || (B[r][c]==lb && r==lr && c<lc)){
+        if(make_tuple(B[r][c],-r,-c) >= make_tuple(lb,-lr,-lc)){
             //cout << lb << " " << lr << " " << lc << " " << B[r][c] << " " << r << " " << c << "\n";
             lb = B[r][c];
             lr = r;
