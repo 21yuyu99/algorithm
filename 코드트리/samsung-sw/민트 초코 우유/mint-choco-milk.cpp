@@ -3,7 +3,7 @@
 #include <algorithm>
 using namespace std;
 int N,T;
-vector<vector<int>> F[3]; //신봉음식
+vector<vector<int>> F; //신봉음식 //비트마스크 001(1) 010(2) 100(4)
 vector<vector<int>> B; //신앙심
 vector<vector<int>> Attack; //이번회차에 전파당했는지
 vector<vector<int>> Visited;
@@ -18,23 +18,20 @@ vector<Group> Groups[3];
 void Input(){
     cin >> N >> T;
 
-    for(int i=0;i<3;i++){
-        F[i].resize(N,vector<int>(N,0));
-    }
     B.resize(N,vector<int>(N,0));
-
+    F.resize(N,vector<int>(N,0));
     for(int i=0;i<N;i++){
         string s;
         cin >> s;
         for(int j=0;j<N;j++){
             if(s[j]=='T'){
-                F[0][i][j] = 1;
+                F[i][j] = 1;
             }
             else if(s[j]=='C'){
-                F[1][i][j] = 1;
+                F[i][j] = 2;
             }
             else{
-                F[2][i][j] = 1;
+                F[i][j] = 4;
             }
         }
     }
@@ -54,14 +51,18 @@ void Morning(){
     }
 }
 int Check_Three_Group(int r,int c){
-    return F[0][r][c] + F[1][r][c] + F[2][r][c] -1;
+    int num = F[r][c];
+    int cnt = 0;
+    for(int i=0;i<3;i++){
+        if(num&1)
+            cnt++;
+        num>>=1;
+    }
+    return cnt-1;
 }
 bool check_bound(int r,int c){
     if(r<0 || c < 0 || r>=N || c >= N) return false;
     return true;
-}
-bool check_same_food(int r,int c,int tr,int tc){
-    return F[0][r][c] == F[0][tr][tc] && F[1][r][c] == F[1][tr][tc] && F[2][r][c] == F[2][tr][tc];
 }
 void Dfs(int r,int c,int bidx,int sidx){
     for(int d=0;d<4;d++){
@@ -69,7 +70,7 @@ void Dfs(int r,int c,int bidx,int sidx){
         int tc = c + dc[d];
         if(!check_bound(tr,tc)) continue;
         if(Visited[tr][tc]) continue;
-        if(!check_same_food(r,c,tr,tc)) continue;
+        if(F[r][c]!=F[tr][tc]) continue;
         Visited[tr][tc] = 1;
         Groups[bidx][sidx].member.push_back({tr,tc});
         Dfs(tr,tc,bidx,sidx);
@@ -127,11 +128,11 @@ bool compare(Group &a,Group &b){
 void print_F(){
     for(int i=0;i<N;i++){
         for(int j=0;j<N;j++){
-            if(F[0][i][j])
+            if(F[i][j]&1)
                 cout << 'T';
-            if(F[1][i][j])
+            if(F[i][j]&2)
                 cout << 'C';
-            if(F[2][i][j])
+            if(F[i][j]&4)
                 cout << 'M';
             cout << " ";
         }
@@ -151,20 +152,16 @@ void propagate(int bidx,int sidx){
         tr += dr[d];
         tc += dc[d];
         if(!check_bound(tr,tc)) return;
-        if(check_same_food(lr,lc,tr,tc)) continue;
+        if(F[lr][lc]==F[tr][tc]) continue;
         int &y = B[tr][tc];
         Attack[tr][tc] = 1;
         if(x>y){ //강한전파
-            F[0][tr][tc] = F[0][lr][lc];
-            F[1][tr][tc] = F[1][lr][lc];
-            F[2][tr][tc] = F[2][lr][lc];
+            F[tr][tc] = F[lr][lc];
             x -= y+1;
             y+=1;
         }
         else{ //약한전파
-            F[0][tr][tc] = max(F[0][lr][lc],F[0][tr][tc]);
-            F[1][tr][tc] = max(F[1][lr][lc],F[1][tr][tc]);
-            F[2][tr][tc] = max(F[2][lr][lc],F[2][tr][tc]);
+            F[tr][tc]|=F[lr][lc];
             y+=x;
             x = 0;
         }
@@ -174,25 +171,16 @@ void output(){
     int total[7] = {0,};
     for(int i=0;i<N;i++){
         for(int j=0;j<N;j++){
-            if(F[0][i][j] && F[1][i][j] && F[2][i][j]) //민트초코우유
-                total[0] += B[i][j];
-            else if(F[0][i][j] && F[1][i][j]) // 민트초코
-                total[1] += B[i][j];
-            else if(F[0][i][j] && F[2][i][j]) // 민트우유
-                total[2] += B[i][j];
-            else if(F[1][i][j] && F[2][i][j]) // 초코우유
-                total[3] += B[i][j];
-            else if(F[2][i][j]) // 우유
-                total[4] += B[i][j];
-            else if(F[1][i][j]) // 초코
-                total[5] += B[i][j];
-            else if(F[0][i][j]) // 민트
-                total[6] += B[i][j];
+            total[F[i][j]-1] += B[i][j];
         }
-    }
-    for(int i=0;i<7;i++){
-        cout << total[i] << " ";
-    }
+    }        
+        cout << total[6] << " ";
+        cout << total[2] << " ";
+        cout << total[4] << " ";
+        cout << total[5] << " ";
+        cout << total[3] << " ";
+        cout << total[1] << " ";
+        cout << total[0] << " ";
     cout << "\n";
 }
 int main() {
