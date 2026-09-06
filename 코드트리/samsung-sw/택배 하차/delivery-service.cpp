@@ -127,7 +127,7 @@ int FindLeftBox(){
                 return k;
         }
     }
-    return k;
+    return -1;
 }
 int FindRightBox(){
     int k = -1;
@@ -154,7 +154,7 @@ int FindRightBox(){
                 return k;
         }
     }
-    return k;
+    return -1;
 }
 void OutBox(int k){
     Box b = Boxes[k];
